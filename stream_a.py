@@ -68,10 +68,10 @@ def run_subscribe():
 
 def user_input_features():
     ph = sidehold_ph.slider('pH', 7.6, 9.0, 7.9)
-    do = sidehold_do.slider('DO', 4.2, 6.0, 5.36)
-    salinitas = sidehold_salinitas.slider('Salinitas', 36.0, 37.0, 36.0)
-    transparansi = sidehold_transparansi.slider('Transparansi', 35, 100, 40)
-    tinggi_air = sidehold_tinggi.slider('Tinggi Air', 140, 220, 180)
+    do = sidehold_do.slider('DO (mg/l)', 4.2, 6.0, 5.36)
+    salinitas = sidehold_salinitas.slider('Salinitas (ppm)', 36.0, 37.0, 36.0)
+    transparansi = sidehold_transparansi.slider('Transparansi (cm)', 35, 100, 40)
+    tinggi_air = sidehold_tinggi.slider('Tinggi Air (cm)', 140, 220, 180)
     data = {'pH': ph,
             'DO': do,
             'Salinitas': salinitas,
@@ -83,10 +83,10 @@ def user_input_features():
 
 def slider_monitoring(dataprame):
     sidehold_ph.slider('pH', 7.6, 9.0, float(dataprame['pH']),key=i)
-    sidehold_do.slider('DO', 4.2, 6.0, float(dataprame['DO']),key=i)
-    sidehold_salinitas.slider('Salinitas', 36.0, 37.0, float(dataprame['Salinitas']),key=i)
-    sidehold_transparansi.slider('Transparansi', 35, 100, int(dataprame['Transparansi']),key=i)
-    sidehold_tinggi.slider('Tinggi Air', 140, 220, int(dataprame['Tinggi_Air']),key=i)
+    sidehold_do.slider('DO (mg/l)', 4.2, 6.0, float(dataprame['DO']),key=i)
+    sidehold_salinitas.slider('Salinitas (ppm)', 36.0, 37.0, float(dataprame['Salinitas']),key=i)
+    sidehold_transparansi.slider('Transparansi (cm)', 35, 100, int(dataprame['Transparansi']),key=i)
+    sidehold_tinggi.slider('Tinggi Air (cm)', 140, 220, int(dataprame['Tinggi_Air']),key=i)
 
 def last_process(df):
     # home_tabel1.write(df)
@@ -152,7 +152,7 @@ if (process=='Manual Input' ):
 elif(process =='Otomatis Monitoring'):
     i=0
     run_subscribe()
-    while i<30 :
+    while i<50 :
         home_header1.write("""### Tabel Input Parameter Air dari **DEVICE**""")
         while gelas == mangkok :
             time.sleep(0.000000001)
@@ -170,48 +170,3 @@ elif(process =='Otomatis Monitoring'):
         last_process(df)
         i=i+1    
         # time.sleep(5)
-    
-# elif(process =='Otomatis Monitoring'):
-#     i=2
-#     while i<5 :
-#         run_subscribe()
-#         print('poin =',i)
-#         st.write("""### Tabel Input Parameter Air dari **DEVICE**""")
-#         while piring == mangkok || piring.keys:
-#             if mangkok == {} : time.sleep(0.000000001)
-#             else : 
-#                 # df = pd.DataFrame(mangkok)
-#                 # df.iloc[:,0:3] = df.iloc[:,0:3]/100
-#                 # slider_monitoring(df)
-#                 # # asdf = st.sidebar.slider('pH', 7.6, 9.0, float(df['pH'].values))
-#                 # # zxcv = st.sidebar.slider('DO', 4.2, 6.0, float(df['DO'].values))
-#                 # # qwer = st.sidebar.slider('Salinitas', 36, 37.0, float(df['Salinitas'].values))
-#                 # # wert = st.sidebar.slider('Transparansi', 35, 100, int(df['Transparansi'].values))
-#                 # # sdfg = st.sidebar.slider('Tinggi Air', 140, 220, int(df['Tinggi_Air'].values))
-#                 # last_process(df)
-#                 time.sleep(0.000000001)
-#         print('iki mangkok',mangkok)
-#         mangkok = [dict([a, [int(x)]] for a, x in b.items()) for b in [mangkok]][0]
-#         print('iku mangkok',mangkok)
-#         print('iki piring',piring)
-#         if piring == {} : 
-#             piring = mangkok
-#         else : 
-#             for j in mangkok.keys():
-#                 piring['%s'%j].append(mangkok['%s'%j][0])
-#         print('iku piring',piring)
-#         #piring = [dict([a, [int(x)]] for a, x in b.items()) for b in [piring]][0]
-#         df = pd.DataFrame(piring)
-#         print(df)
-#         df.iloc[:,0:3] = df.iloc[:,0:3]/100
-#         slider_monitoring(df.iloc[-1])
-#         print('temani-temani')
-#         # slider_monitoring(df.iloc[0])
-#         # asdf = st.sidebar.slider('pH', 7.6, 9.0, float(df['pH'].values))
-#         # zxcv = st.sidebar.slider('DO', 4.2, 6.0, float(df['DO'].values))
-#         # qwer = st.sidebar.slider('Salinitas', 36, 37.0, float(df['Salinitas'].values))
-#         # wert = st.sidebar.slider('Transparansi', 35, 100, int(df['Transparansi'].values))
-#         # sdfg = st.sidebar.slider('Tinggi Air', 140, 220, int(df['Tinggi_Air'].values))
-#         last_process(df)
-#         print(type(i),i)
-#         i=i+1
