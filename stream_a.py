@@ -40,7 +40,6 @@ def publish(client):
          time.sleep(1)
          msg = f"messages: {msg_count}"
          result = client.publish(topic, msg)
-         # result: [0, 1]
          status = result[0]
          if status == 0:
              print(f"Send `{msg}` to topic `{topic}`")
@@ -83,10 +82,10 @@ def user_input_features():
 
 def slider_monitoring(dataprame):
     sidehold_ph.slider('pH', 7.6, 9.0, float(dataprame['pH']),key=i)
-    sidehold_do.slider('DO (mg/l)', 4.2, 6.0, float(dataprame['DO']),key=i)
-    sidehold_salinitas.slider('Salinitas (ppm)', 36.0, 37.0, float(dataprame['Salinitas']),key=i)
-    sidehold_transparansi.slider('Transparansi (cm)', 35, 100, int(dataprame['Transparansi']),key=i)
-    sidehold_tinggi.slider('Tinggi Air (cm)', 140, 220, int(dataprame['Tinggi_Air']),key=i)
+    sidehold_do.slider('DO', 4.2, 6.0, float(dataprame['DO']),key=i)
+    sidehold_salinitas.slider('Salinitas', 36.0, 37.0, float(dataprame['Salinitas']),key=i)
+    sidehold_transparansi.slider('Transparansi', 35, 100, int(dataprame['Transparansi']),key=i)
+    sidehold_tinggi.slider('Tinggi Air', 140, 220, int(dataprame['Tinggi_Air']),key=i)
 
 def last_process(df):
     # home_tabel1.write(df)
@@ -112,13 +111,60 @@ def last_process(df):
     quality = np.array(['Jelek','Bagus'])
     home_header2.subheader('Prediksi')
     home_tabel2.info(quality[int(prediction[-1])])
-    if quality[int(prediction[-1])] == 'Bagus': home_tabel3.info('JAGA KONDISI INI dengan penambahan pupuk setiap minggu')
-    else : home_tabel3.info('PERHATIAN!!!....Perlu penggantian air secara berkala dan pemberian kapur dolomit')
+    keterangan_do = ''
+    keterangan_ph = ''
+    keterangan_sal = ''
+    keterangan_trans = ''
+    keterangan_penjaga= ''
+    rekom_do = ''
+    rekom_ph = ''
+    rekom_sal = ''
+    rekom_trans = ''
+    rekom_penjaga= ''
+    if quality[int(prediction[-1])] == 'Bagus':
+        if float(fd['DO'])<3: 
+            keterangan_do = ' Fitoplankton sedang melakukan proses respirasi.'
+            rekom_do = ' tambahkan kincir dan pemberian pupuk setiap minggu.'
+        if float(fd['pH'])<7.5: 
+            keterangan_ph = ' Terdapat ion alumunium di dasar kolam.'
+            rekom_ph = ' Taburkan kapur tohor sebanyak 250 sampai 500 kg/ha secara bertahap.'
+        if float(fd['Salinitas'])<15:
+            keterangan_sal = ' Terlalu banyak ratio air tawar pada permukaan tambak.'
+            rekom_sal = ' Lakukan pergantian air.'
+        if int(fd['Transparansi'])<25:
+            keterangan_trans = ' Populasi plankton menurun.'
+            rekom_trans = ' Lakukan penambahan air dari pematang.'
+        if keterangan_ph=='' and keterangan_do=='' and keterangan_sal=='' and keterangan_trans=='':
+            keterangan_penjaga=' Jumlah fitoplankton sudah cukup.'
+            rekom_penjaga=' Tambahkan pupuk setiap minggu.'
+        home_tabel3.info('Keadaan tambak bagus dengan kondisi%s%s%s%s%s'%(keterangan_do,keterangan_ph,keterangan_sal,keterangan_trans,keterangan_penjaga))
+        home_tabel4.info('JAGA KONDISI INI dan%s%s%s%s%s'%(rekom_do,rekom_ph,rekom_sal,rekom_trans,rekom_penjaga))
+    else :
+        if float(fd['DO'])<3: 
+            keterangan_do = ' Air kolam mengandung banyak fosfor, amonia, copper dan bahan organik. Banyak zooplankton.'
+            rekom_do = ' Tambahkan hidrogen peroksida, pemberian dilakukan secara berulang setiap 2 jam sampai kadar oksigen stabl.'
+        if float(fd['pH'])<7.5: 
+            keterangan_ph = ' Terlalu banyak ion alumunium mengendap didasar tanah.'
+            rekom_ph = ' Gunakan kapur tohor sebanyak 500 sampai 100 kg/ha.'
+        elif float(fd['pH'])>8.5:
+            keterangan_ph = ' Kandungan besi pada tambak meningkat, terdapat fitoplankton beracun (Mycrocystis spp).'
+            rekom_ph = ' Gunakan kapur tohot sebanyak 100 sampai 250 kg/ha. Lakukan penggantian air menggunakan air dari pematang secara bertahap.'
+        if float(fd['Salinitas'])<15:
+            keterangan_sal = ' Udang kram (bengkok dan berwarna putih).'
+            rekom_sal = ' Lakukan pemberian KCL dengan dosis 1 ppm.'
+        if int(fd['Transparansi'])<25:
+            keterangan_trans = ' Sedikit populasi plankton dan timbul busa di permukaan air.'
+            rekom_trans = ' Lakukan pergantian air dari pematang yang sudah disiapkan atau pengenceran.'
+        if keterangan_ph=='' and keterangan_do=='' and keterangan_sal=='' and keterangan_trans=='':
+            keterangan_penjaga=' Air terasa lengket.'
+            rekom_penjaga=' Perlu penggantian air secara berkala dan pemberian kapur dolomit.'
+        home_tabel3.info('Udang tidak nafsu makan,%s%s%s%s%s'%(keterangan_do,keterangan_ph,keterangan_sal,keterangan_trans,keterangan_penjaga))
+        home_tabel4.info('PERHATIAN!!!....%s%s%s%s%s'%(rekom_do,rekom_ph,rekom_sal,rekom_trans,rekom_penjaga))
 
     # st.subheader('Probabilitas Prediksi')
     # st.write(prediction_proba)
 
-load_clf = pickle.load(open('KNN.pkl', 'rb'))
+load_clf = pickle.load(open('streamlit\punyaku\KNN.pkl', 'rb'))
 
 process ='Otomatis Monitoring'
 
@@ -142,6 +188,7 @@ home_tabel1 = st.empty()
 home_header2 = st.empty()
 home_tabel2 = st.empty()
 home_tabel3 = st.empty()
+home_tabel4 = st.empty()
 
 if (process=='Manual Input' ):
     side_title.header('Input **MANUAL** Nilai Parameter Air')
@@ -152,7 +199,7 @@ if (process=='Manual Input' ):
 elif(process =='Otomatis Monitoring'):
     i=0
     run_subscribe()
-    while i<50 :
+    while i<30 :
         home_header1.write("""### Tabel Input Parameter Air dari **DEVICE**""")
         while gelas == mangkok :
             time.sleep(0.000000001)
@@ -169,4 +216,3 @@ elif(process =='Otomatis Monitoring'):
         slider = df.iloc[-1]
         last_process(df)
         i=i+1    
-        # time.sleep(5)
