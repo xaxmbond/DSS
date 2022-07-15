@@ -164,7 +164,7 @@ def last_process(df):
     # st.subheader('Probabilitas Prediksi')
     # st.write(prediction_proba)
 
-load_clf = pickle.load(open('streamlit\punyaku\KNN.pkl', 'rb'))
+load_clf = pickle.load(open('KNN.pkl', 'rb'))
 
 process ='Otomatis Monitoring'
 
