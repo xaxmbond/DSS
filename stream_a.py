@@ -140,19 +140,19 @@ def last_process(df):
         home_tabel3.info('Keadaan tambak bagus dengan kondisi%s%s%s%s%s'%(keterangan_do,keterangan_ph,keterangan_sal,keterangan_trans,keterangan_penjaga))
         home_tabel4.info('JAGA KONDISI INI dan%s%s%s%s%s'%(rekom_do,rekom_ph,rekom_sal,rekom_trans,rekom_penjaga))
     else :
-        if float(fd['DO'])<3: 
+        if float(fd.iloc[-1,:]['DO'])<3: 
             keterangan_do = ' Air kolam mengandung banyak fosfor, amonia, copper dan bahan organik. Banyak zooplankton.'
             rekom_do = ' Tambahkan hidrogen peroksida, pemberian dilakukan secara berulang setiap 2 jam sampai kadar oksigen stabl.'
-        if float(fd['pH'])<7.5: 
+        if float(fd.iloc[-1,:]['pH'])<7.5: 
             keterangan_ph = ' Terlalu banyak ion alumunium mengendap didasar tanah.'
             rekom_ph = ' Gunakan kapur tohor sebanyak 500 sampai 100 kg/ha.'
-        elif float(fd['pH'])>8.5:
+        elif float(fd.iloc[-1,:]['pH'])>8.5:
             keterangan_ph = ' Kandungan besi pada tambak meningkat, terdapat fitoplankton beracun (Mycrocystis spp).'
-            rekom_ph = ' Gunakan kapur tohot sebanyak 100 sampai 250 kg/ha. Lakukan penggantian air menggunakan air dari pematang secara bertahap.'
-        if float(fd['Salinitas'])<15:
+            rekom_ph = ' Gunakan kapur tohor sebanyak 100 sampai 250 kg/ha. Lakukan penggantian air menggunakan air dari pematang secara bertahap.'
+        if float(fd.iloc[-1,:]['Salinitas'])<15:
             keterangan_sal = ' Udang kram (bengkok dan berwarna putih).'
             rekom_sal = ' Lakukan pemberian KCL dengan dosis 1 ppm.'
-        if int(fd['Transparansi'])<25:
+        if int(fd.iloc[-1,:]['Transparansi'])<25:
             keterangan_trans = ' Sedikit populasi plankton dan timbul busa di permukaan air.'
             rekom_trans = ' Lakukan pergantian air dari pematang yang sudah disiapkan atau pengenceran.'
         if keterangan_ph=='' and keterangan_do=='' and keterangan_sal=='' and keterangan_trans=='':
