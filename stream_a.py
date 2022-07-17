@@ -122,16 +122,16 @@ def last_process(df):
     rekom_trans = ''
     rekom_penjaga= ''
     if quality[int(prediction[-1])] == 'Bagus':
-        if float(fd['DO'])<3: 
+        if float(fd.iloc[-1,:]['DO'])<3: 
             keterangan_do = ' Fitoplankton sedang melakukan proses respirasi.'
             rekom_do = ' tambahkan kincir dan pemberian pupuk setiap minggu.'
-        if float(fd['pH'])<7.5: 
+        if float(fd.iloc[-1,:]['pH'])<7.5: 
             keterangan_ph = ' Terdapat ion alumunium di dasar kolam.'
             rekom_ph = ' Taburkan kapur tohor sebanyak 250 sampai 500 kg/ha secara bertahap.'
-        if float(fd['Salinitas'])<15:
+        if float(fd.iloc[-1,:]['Salinitas'])<15:
             keterangan_sal = ' Terlalu banyak ratio air tawar pada permukaan tambak.'
             rekom_sal = ' Lakukan pergantian air.'
-        if int(fd['Transparansi'])<25:
+        if int(fd.iloc[-1,:]['Transparansi'])<25:
             keterangan_trans = ' Populasi plankton menurun.'
             rekom_trans = ' Lakukan penambahan air dari pematang.'
         if keterangan_ph=='' and keterangan_do=='' and keterangan_sal=='' and keterangan_trans=='':
